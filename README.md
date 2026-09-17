@@ -6,7 +6,7 @@ Pick a sign by code or by name, get its size and actual square footage, and see 
 
 One HTML file. No install, no build step, no server, no account, no tracking.
 
-👉 **[Open the tool](https://YOUR-USERNAME.github.io/tcp-quantity-takeoff/)** · [Download for offline use](https://github.com/YOUR-USERNAME/tcp-quantity-takeoff/archive/refs/heads/main.zip)
+👉 **[Open the tool](https://UmeshSharma8848.github.io/tcp-quantity-takeoff/)** · [Download for offline use](https://github.com/UmeshSharma8848/tcp-quantity-takeoff/archive/refs/heads/main.zip)
 
 ![Searching the sign catalog](docs/screenshot-search.png)
 
@@ -65,7 +65,7 @@ Not every sign on a plan is a standard size. Add your own: code, description, sh
 
 ## Quick start
 
-**Use it online** — open the [GitHub Pages link](https://YOUR-USERNAME.github.io/tcp-quantity-takeoff/). Nothing to install.
+**Use it online** — open the [GitHub Pages link](https://UmeshSharma8848.github.io/tcp-quantity-takeoff/). Nothing to install.
 
 **Use it offline** — download `index.html` and double-click it. It works with no internet connection; only the web fonts and the Excel export library load from a CDN, and the tool still runs without them (the Excel button needs the library, but Copy table always works).
 
@@ -122,7 +122,7 @@ Rounded corners are ignored. Switching the area basis to **W × H** uses width �
 - Pay ranges and unit names follow common practice. Confirm the pay item names, units and measurement method against your own specification
 - The default of one Type B light on each barricade and advance warning sign is a convenient starting point, not a code requirement
 
-Found something wrong? [Open an issue](https://github.com/YOUR-USERNAME/tcp-quantity-takeoff/issues) with the sign code and the correct size, and please cite the table you're reading from.
+Found something wrong? [Open an issue](https://github.com/UmeshSharma8848/tcp-quantity-takeoff/issues) with the sign code and the correct size, and please cite the table you're reading from.
 
 ## Privacy and data
 
