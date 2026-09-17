@@ -1,0 +1,154 @@
+<header class="band">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,3 97,50 50,97 3,50" fill="#F7862A" stroke="#fff" stroke-width="3"/><text x="50" y="58" text-anchor="middle" font-family="Overpass,sans-serif" font-weight="800" font-size="24" fill="#111">TCP</text></svg>
+      <div>
+        <h1>Work Zone Sign SF Finder</h1>
+        <p>Sign, barricade and device quantities · MUTCD 2009 · ODOT 2009 Traffic Control Standards</p>
+      </div>
+    </div>
+    <div class="projchip"><span>Project</span><b id="projName">Untitled project</b><span class="store" id="storeMode">This browser</span></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" id="tab-signs" aria-selected="true" data-tab="signs">1 · Enter items</button>
+      <button role="tab" id="tab-sheet" aria-selected="false" data-tab="sheet">2 · Quantity summary <span class="badge" id="badge"></span></button>
+      <button role="tab" id="tab-guide" aria-selected="false" data-tab="guide">Reference</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<!-- TAB 1 -->
+<section id="p-signs" role="tabpanel" aria-labelledby="tab-signs">
+  <div class="toolbar">
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="q" type="text" placeholder="Search anything: w201, r11e, lane closed, type 3, drum, grabber, type b…" autocomplete="off" aria-label="Search signs and devices">
+      <button class="xbtn" id="clearQ" type="button" aria-label="Clear search">×</button>
+    </label>
+    <div class="field"><span class="label" id="lblRoad">Default sign size</span>
+      <div class="seg" role="group" aria-labelledby="lblRoad" id="road"></div>
+    </div>
+    <button class="btn dark" id="newCustom" type="button">+ Project-specific sign</button>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="hint"><span id="hint"></span><span class="meta">Light column: pick a warning light for any sign or device.</span></div>
+  <div class="list" id="list"></div>
+  <div class="empty" id="empty" hidden>Nothing matches that search. Try part of a code (<b>w21</b>), a word on the sign, or add a <b>project-specific sign</b>.</div>
+</section>
+
+<!-- TAB 2 -->
+<section id="p-sheet" role="tabpanel" aria-labelledby="tab-sheet" hidden>
+  <div class="panel">
+    <div class="projgrid">
+      <div class="field"><label class="label" for="pName">Project name</label><input class="inp" id="pName" type="text" placeholder="e.g. US-177 Bridge Rehab, Payne Co."></div>
+      <div class="field"><label class="label" for="pNo">Job / contract no.</label><input class="inp mono" id="pNo" type="text" placeholder="JP 12345(04)"></div>
+      <div class="field"><label class="label" for="pLoc">Location / notes</label><input class="inp" id="pLoc" type="text" placeholder="County, limits…"></div>
+      <div class="field"><label class="label" for="days">Constr. calendar days</label><input class="inp mono days num-in" style="width:100%;text-align:left" id="days" type="number" min="0"></div>
+      <div class="field"><span class="label" id="lblBasis">Sign area basis</span>
+        <div class="seg" role="group" aria-labelledby="lblBasis" id="basis"><button type="button" data-v="actual">Actual shape</button><button type="button" data-v="rect">W × H</button></div>
+      </div>
+    </div>
+    <div class="projbar">
+      <button class="btn primary" id="saveProj" type="button">Save project</button>
+      <select class="inp" id="openProj" style="width:auto;min-width:200px" aria-label="Open a saved project"><option value="">Open saved project…</option></select>
+      <button class="btn" id="newProj" type="button">New project</button>
+      <button class="btn danger" id="delProj" type="button">Delete saved</button>
+      <span class="grow"></span>
+      <span class="status" id="saveStatus"></span>
+    </div>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="actions">
+    <button class="btn primary" id="xlsx" type="button">Export to Excel (.xlsx)</button>
+    <button class="btn" id="copy" type="button">Copy table</button>
+    <button class="btn" id="print" type="button">Print</button>
+    <span class="grow"></span>
+    <button class="btn" id="bulkB" type="button">Type B on all W20/W21 signs</button>
+    <button class="btn" id="bulkNone" type="button">Remove sign lights</button>
+    <button class="btn danger" id="clearAll" type="button">Clear quantities</button>
+  </div>
+  <div class="msg" id="msg" role="status"></div>
+
+  <div class="tablewrap"><table class="sheet">
+    <thead><tr>
+      <th></th><th>Item</th><th>Description</th><th>Size (in)</th><th class="num">SF ea.</th><th class="num">Qty</th><th class="num">Total SF</th><th class="num">Days</th><th class="num">Sign / unit-days</th><th>Warning light</th><th class="num">Per unit</th><th class="num">Lights</th><th class="num">Light-days</th><th></th>
+    </tr></thead>
+    <tbody id="sheet"></tbody>
+  </table></div>
+
+  <h2 class="sec">Warning light summary</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Light type</th><th>Use</th><th class="num">On signs & devices</th><th class="num">Stand-alone</th><th class="num">Total lights</th><th class="num">Light-days</th></tr></thead>
+    <tbody id="lightsum"></tbody>
+  </table></div>
+  <p class="meta" style="margin-top:10px">Sign-days = quantity × days. Unit-days apply the same math to devices. A blank Days cell uses the project days. Light-days = lights × days. Use the unit your plans pay in.</p>
+</section>
+
+<!-- TAB 3 -->
+<section id="p-guide" role="tabpanel" aria-labelledby="tab-guide" hidden>
+  <div class="guide">
+    <h2>Reading a sign code</h2>
+    <table><tbody>
+      <tr><td><code>W20-1</code></td><td><b>W</b> warning · <b>R</b> regulatory · <b>S</b> school · <b>D / M / E / G</b> guide, route and detour · <b>OM</b> object marker. The number after the letter is the series and the number after the dash is the sign.</td></tr>
+      <tr><td><code>W20-5<b>a</b></code></td><td>A lowercase letter is a <b>different version</b> of the sign, not a size. W20-5 = RIGHT LANE CLOSED, W20-5a = RIGHT 2 LANES CLOSED.</td></tr>
+      <tr><td><code>W13-1<b>P</b></code></td><td><b>P</b> = plaque, mounted under a primary sign.</td></tr>
+      <tr><td><code>R1-1<b>E</b></code> / <code>R1-1<b>F</b></code></td><td>Plan sign lists use E and F for the <b>Expressway</b> and <b>Freeway</b> sizes. Type them in the search (<code>r11e</code>). Stop signs aren't used on freeways.</td></tr>
+    </tbody></table>
+
+    <h2>Sizes and sources</h2>
+    <p><b>Work zone signs</b> (tagged 6F-1) use MUTCD 2009 Table 6F-1, which the ODOT 2009 Traffic Control Standards follow. Their Expressway and Freeway sizes come from the table's shared freeway/expressway column. Other signs come from Table 2B-1 (regulatory), 2C-2 (warning), 7B-1 (school) and 9B-1 (bicycle), plus a few route markers from 2D-2. Multi-lane, Expressway, Freeway, Minimum and Oversized sizes are used where the tables list them. If a size is missing, the closest available size is used and marked. Signs whose width varies aren't listed; add those as project-specific signs.</p>
+
+    <h2>How area is calculated</h2>
+    <p>Diamonds are side × side (36×36 = 9.00 SF). Octagon = 0.8284·W². Equilateral triangle = 0.433·S². Circle = π·D²/4. Pentagon (school) ≈ 0.75·W·H. Crossbuck = 2·L·W − W². Rectangles = W × H, with rounded corners ignored. The <b>W × H</b> basis uses width × height for every shape instead.</p>
+
+    <h2>Pay ranges</h2>
+    <p><b>A</b> less than 6.25 SF · <b>B</b> 6.25–15.99 SF · <b>C</b> 16–32 SF. Exactly 6.25 SF is B and exactly 16.00 SF is C. Signs over 32 SF are listed separately.</p>
+
+    <h2>Warning lights (MUTCD §6F.83)</h2>
+    <table><tbody id="lightRef"></tbody></table>
+    <p>All four types are portable, powered, yellow, lens-directed lights, with the bottom of the lens at least 30 in above the ground. In this tool, barricades and flag trees start with one Type B light each. You can change the light type or remove it on any line.</p>
+
+    <h2>Channelizing devices and barricades (§6F.63–6F.69)</h2>
+    <p>Cones: 18 in minimum for daytime low-speed work, 28 in minimum for high-speed or night work. Drums: at least 36 in tall and 18 in wide. Barricade rails: 8–12 in wide. Type I and II rails are at least 24 in long and Type III rails at least 48 in. Direction indicator barricades: a 24×12 in W1-6 arrow over a 24×8 in rail. Arrow boards: Type A 48×24, Type B 60×30, Type C 96×48, and Type D vehicle-mounted.</p>
+
+    <h2>Saving</h2>
+    <p id="saveNote">Saved projects and project-specific signs are stored privately. On claude.ai they're saved to your account. In the offline HTML file they're saved in that browser.</p>
+
+    <h2>Limits</h2>
+    <p>The sign pictures are simplified drawings. The ODOT standard sheets are scanned, so sizes weren't checked against them sheet by sheet. Sizes marked "verify" come from memory of the MUTCD tables. The project plans, ODOT standards and special provisions govern.</p>
+  </div>
+</section>
+</main>
+
+<div class="bar" id="bar">
+  <div class="in">
+    <div class="sum" id="barsum"></div>
+    <button class="btn primary" id="goSheet" type="button">Open quantity summary →</button>
+  </div>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <form method="dialog" id="cform">
+    <div class="dlg-h"><h2 id="dlgTitle">Project-specific sign</h2><button class="xbtn" value="cancel" formnovalidate aria-label="Close">×</button></div>
+    <div class="dlg-b">
+      <div class="fgrid">
+        <div class="field full"><label class="label" for="cProj">Project</label><input class="inp" id="cProj" type="text" required placeholder="Project name"></div>
+        <div class="field"><label class="label" for="cCode">Sign code / label</label><input class="inp mono" id="cCode" type="text" required placeholder="CW20-1 or SP-1"></div>
+        <div class="field"><label class="label" for="cType">Category</label>
+          <select class="inp" id="cType"><option value="W">Warning</option><option value="R">Regulatory</option><option value="G">Guide / detour</option><option value="S">School</option></select></div>
+        <div class="field full"><label class="label" for="cName">Description</label><input class="inp" id="cName" type="text" required placeholder="e.g. Road Work Ahead — oversized for median"></div>
+        <div class="field"><label class="label" for="cShape">Shape</label>
+          <select class="inp" id="cShape"><option value="rect">Rectangle</option><option value="dia">Diamond (side × side)</option><option value="oct">Octagon</option><option value="tri">Triangle</option><option value="circ">Circle (diameter)</option><option value="pent">Pentagon</option></select></div>
+        <div class="field"><span class="label">Color</span>
+          <label class="chk"><input type="checkbox" id="cOrange" checked> Work zone orange</label></div>
+        <div class="field"><label class="label" for="cW" id="cWl">Width (in)</label><input class="inp mono" id="cW" type="number" min="1" step="0.5" required value="48"></div>
+        <div class="field" id="cHwrap"><label class="label" for="cH">Height (in)</label><input class="inp mono" id="cH" type="number" min="1" step="0.5" required value="30"></div>
+        <div class="field full"><label class="label" for="cLeg">Legend (one line per row)</label><textarea class="inp" id="cLeg" rows="3" placeholder="ROAD WORK&#10;NEXT 3 MILES"></textarea></div>
+      </div>
+      <div class="preview"><div class="pv" id="cPrev"></div><div class="mono" id="cArea" style="font-weight:800"></div><div id="cPill"></div></div>
+    </div>
+    <div class="dlg-f"><span class="msg" id="cMsg" style="margin:0 auto 0 0"></span><button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" id="cSave" value="save">Save sign</button></div>
+  </form>
+</dialog>
